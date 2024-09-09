@@ -1,4 +1,4 @@
-import { Categories, Container, Filters, SortPopup, Title, TopBar } from "@/components/shared";
+import { Container, Filters,  Title, TopBar } from "@/components/shared";
 import { ProductsGroupList } from "@/components/shared/products-group-list";
 import { prisma } from "@/prisma/prisma-client";
 
