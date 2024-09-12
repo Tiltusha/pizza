@@ -19,7 +19,7 @@ export default async function ProductPage({ params: { id } }: { params: { id: st
 
                     <p className="text-gray-400">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Мир заманивший точках однажды всеми ручеек. Силуэт залетают свою по всей страну города своего живет большого, даже подпоясал толку оксмокс даль.</p>
 
-                    <GroupVariants selectedValue="2" items={[
+                    <GroupVariants value="2" items={[
                         { name: 'Маленькая', value: '1' },
                         { name: 'Средняя', value: '2' },
                         { name: 'Большая', value: '3' },
