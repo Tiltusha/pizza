@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import { Api } from "../services/api-client";
 import { getCartDetails } from "../lib";
+import { CartStateItem } from "../lib/get-cart-details";
 
-export interface Cart {
+export interface CartState {
     loading: boolean;
     error: boolean;
     totalAmount: number;
-    items: ICartItem[];
+    items: CartStateItem[];
 
     /* получение товаров из корзины */
     fetchCartItems: () => Promise<void>;
@@ -41,7 +42,18 @@ export const useCartStore = create<CartState>((set, get) => ({
     },
 
     removeCartItem: async (id: number) => {},
-    updateItemQuantity: async (id: number, quantity: number) => {},
+    updateItemQuantity: async (id: number, quantity: number) => {
+        try {
+            set({ loading: true, error: false, })
+            const data = await Api.cart.updateItemQuantity(id, quantity);
+            set(getCartDetails(data));
+        } catch (error) {
+            set({ error: true });
+        } finally {
+            set({ loading: false });
+        }
+    },
     addCartItem: async (values: any) => {}
     }
 ));
+
