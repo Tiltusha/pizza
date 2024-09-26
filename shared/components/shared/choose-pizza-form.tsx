@@ -4,11 +4,10 @@ import { PizzaImage } from './pizza-image';
 import { Title } from './title';
 import { Button } from '../ui';
 import { GroupVariants } from './group-variants';
-import { mapPizzaType, PizzaSize, pizzaSizes, PizzaType, pizzaTypes } from '@/shared/constants/pizza';
+import { PizzaSize, PizzaType, pizzaTypes } from '@/shared/constants/pizza';
 import { Ingredient, ProductItem } from '@prisma/client';
 import { IngredientItem } from './ingredient-item';
-import { useSet } from 'react-use';
-import { calcTotalPizzaPrice, getAvailablePizzaSizes, getPizzaDetails } from '@/shared/lib';
+import { getPizzaDetails } from '@/shared/lib';
 import { usePizzaOptions } from '@/shared/hooks/use-pizza-options';
 
 interface Props {
@@ -17,7 +16,7 @@ interface Props {
     className?: string;
     ingredients: Ingredient[];
     items: ProductItem[];
-    onClickAddCart?: VoidFunction;
+    onSubmit: (itemId: number, ingredients: number[]) => void;
 }
 
 export const ChoosePizzaForm: React.FC<Props> = ({ 
@@ -26,15 +25,16 @@ export const ChoosePizzaForm: React.FC<Props> = ({
     className,
     ingredients,
     items,
-    onClickAddCart
+    onSubmit
  }) => {
-    const { size, type, setSize, setType, selectedIngredients, availableSizes, addIngredient } = usePizzaOptions(items);
+    const { size, type, setSize, setType, selectedIngredients, availableSizes, currentItemId, addIngredient } = usePizzaOptions(items);
  
     const { totalPrice, textDetails } = getPizzaDetails(type, size, items, ingredients, selectedIngredients);
 
     const handleClickAdd = () => {
-        onClickAddCart?.();
-        
+        if (currentItemId) {
+            onSubmit(currentItemId, Array.from(selectedIngredients));
+        }
     }
 
     return (

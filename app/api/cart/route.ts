@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         let token = req.cookies.get('cartToken')?.value;
 
         if (!token) {
-            let token = crypto.randomUUID();
+            token = crypto.randomUUID();
         }
 
         const userCart = await findOrCreateCart(token);
@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
             }
         })
 
+        // если товар был найден то +1
         if (findCartItem) {
             await prisma.cartItem.update({
                 where: {
@@ -84,10 +85,10 @@ export async function POST(req: NextRequest) {
         })
 
         const updatedUserCart = await updateCartTotalAmount(token);
-            const resp = NextResponse.json(updatedUserCart)
-            resp.cookies.set('cartToken', token as string)
-            return resp;
-
+        
+        const resp = NextResponse.json(updatedUserCart)
+        resp.cookies.set('cartToken', token)
+        return resp;
         
     } catch (error) {
         console.log(error);
