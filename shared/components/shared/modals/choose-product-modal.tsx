@@ -19,7 +19,7 @@ export const ChooseProductModal: React.FC<Props> = ({ product }) => {
     const router = useRouter();
     const firstItem = product.items[0];
     const isPizzaForm = Boolean(firstItem.pizzaType);
-    const addCartItem = useCartStore((state) => state.addCartItem);
+    const [addCartItem, loading] = useCartStore((state) => [state.addCartItem, state.loading]);
 
     const onAddProduct = () => {
         addCartItem({
@@ -34,7 +34,8 @@ export const ChooseProductModal: React.FC<Props> = ({ product }) => {
                 ingredients
             })
             toast.success('Пицца добавлена в корзину');
-        } catch (error) {
+            router.refresh();
+            } catch (error) {
             toast.error('Не удалось добавить пиццу в корзину');
             console.log(error);
         }
@@ -45,9 +46,9 @@ export const ChooseProductModal: React.FC<Props> = ({ product }) => {
             <DialogContent className={cn("p-0 w-[1060px] max-w-[1060px] min-h-[500px] bg-white overflow-hidden")}>
                 {
                     isPizzaForm ? (
-                        <ChoosePizzaForm onSubmit={onAddPizza} imageUrl={product.imageUrl} name={product.name} ingredients={product.ingredients} items={product.items} />
+                        <ChoosePizzaForm onSubmit={onAddPizza} imageUrl={product.imageUrl} name={product.name} ingredients={product.ingredients} items={product.items} loading={loading} />
                     ) : (
-                        <ChooseProductForm onSubmit={onAddProduct} imageUrl={product.imageUrl} name={product.name} price={firstItem.price} />
+                        <ChooseProductForm onSubmit={onAddProduct} imageUrl={product.imageUrl} name={product.name} price={firstItem.price} loading={loading} />
                     )
                 }
             </DialogContent>
