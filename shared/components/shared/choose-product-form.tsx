@@ -18,6 +18,7 @@ export const ChooseProductForm: React.FC<Props> = ({
     className,
     onSubmit,
     price,
+    loading
  }) => {
 
     return (
@@ -34,8 +35,9 @@ export const ChooseProductForm: React.FC<Props> = ({
                 <Title text={name} size="md" className="font-extrabold mb-1" />
 
                 <Button 
+                loading={loading}
                 className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
-                onClick={onSubmit}
+                onClick={() => onSubmit?.()}
                 >
                     Добавить в корзину за {price} P
                 </Button>
